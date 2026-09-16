@@ -1,6 +1,6 @@
 import type {ClientGrpc} from "@nestjs/microservices";
-import {Controller, Get, Inject, Param} from "@nestjs/common";
-import {firstValueFrom} from "rxjs";
+import {Body, Controller, Get, Inject, Param, Post} from "@nestjs/common";
+import {OrderEventProducer} from "./order-event-producer.js";
 
 interface ProductService {
     getProduct(data: { id: number }): {
@@ -14,11 +14,24 @@ export class OrderServiceController {
 
     constructor(
         @Inject('PRODUCT_SERVICE')
-        private readonly grpcClient: ClientGrpc
+        private readonly grpcClient: ClientGrpc,
+        private readonly orderEventProducer: OrderEventProducer,
     ) {}
 
     onModuleInit() {
         this.productService = this.grpcClient.getService<ProductService>('ProductService');
+    }
+
+    @Post()
+    createOrder(@Body() body: { productId: number }) {
+        const order = {
+            orderId: 123,
+            productId: body.productId,
+        }
+
+        this.orderEventProducer.publishOrderCreated(order);
+
+        return order;
     }
 
     @Get('grpc/:id')

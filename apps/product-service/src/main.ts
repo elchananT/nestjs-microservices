@@ -5,15 +5,33 @@ import { dirname, join } from "path";
 import {fileURLToPath} from "node:url";
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(ProductServiceModule, {
-      transport: Transport.GRPC,
+    const app = await NestFactory.create(ProductServiceModule);
+    app.enableShutdownHooks();
+
+        app.connectMicroservice<MicroserviceOptions>({
+          transport: Transport.GRPC,
+          options: {
+            package: 'product',
+            protoPath: join(dirname(fileURLToPath(import.meta.url)), '../../shared/proto/product.proto'),
+            url: 'localhost:5001',
+          }
+      });
+
+    app.connectMicroservice<MicroserviceOptions>({
+      transport: Transport.KAFKA,
       options: {
-        package: 'product',
-        protoPath: join(dirname(fileURLToPath(import.meta.url)), '../../shared/proto/product.proto'),
-        url: 'localhost:5001',
+        client: {
+            brokers: ['localhost:9092'],
+            clientId: 'product-service',
+        },
+          consumer: {
+            groupId: 'product-service-group',
+          }
       }
   });
 
-  await app.listen()
+    await app.startAllMicroservices()
+
+    await app.listen(3000);
 }
 await bootstrap();
