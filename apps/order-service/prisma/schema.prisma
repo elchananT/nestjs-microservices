@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/@prisma/order-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:5433/order?schema=public"
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  createAt  DateTime @default(now())
+}
+
+model ProductCopy {
+  id    Int    @id
+  name  String
+  price Float
+}

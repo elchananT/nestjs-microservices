@@ -7,6 +7,8 @@ import {join} from "path";
 import {fileURLToPath} from "node:url";
 import {dirname} from "node:path";
 import {OrderEventProducer} from "./order-event-producer.js";
+import { PrismaService } from './prisma.service.js';
+import {ProductEventListener} from "./product-event-listener.js";
 
 @Module({
   imports: [
@@ -37,7 +39,7 @@ import {OrderEventProducer} from "./order-event-producer.js";
       ]),
       HttpModule,
   ],
-  controllers: [OrderServiceController],
-  providers: [OrderServiceService, OrderEventProducer],
+  controllers: [OrderServiceController, ProductEventListener],
+  providers: [OrderServiceService, OrderEventProducer, PrismaService],
 })
 export class OrderServiceModule {}
