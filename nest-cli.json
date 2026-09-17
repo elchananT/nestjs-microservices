@@ -19,13 +19,13 @@
         "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
     },
-    "g": {
+    "discovery-service": {
       "type": "application",
-      "root": "apps/g",
+      "root": "apps/discovery-service",
       "entryFile": "main",
-      "sourceRoot": "apps/g/src",
+      "sourceRoot": "apps/discovery-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/g/tsconfig.app.json"
+        "tsConfigPath": "apps/discovery-service/tsconfig.app.json"
       }
     },
     "order-service": {

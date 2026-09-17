@@ -3,9 +3,9 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
-    "rootDir": "../..",
-    "outDir": "../../dist/apps/product-service"
+    "rootDir": "./src",
+    "outDir": "../../dist/apps/discovery-service"
   },
-  "include": ["src/**/*", "../shared/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }

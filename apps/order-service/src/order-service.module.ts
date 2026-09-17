@@ -9,6 +9,7 @@ import {dirname} from "node:path";
 import {OrderEventProducer} from "./order-event-producer.js";
 import { PrismaService } from './prisma.service.js';
 import {ProductEventListener} from "./product-event-listener.js";
+import {HealthController} from "./health.controller.js";
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import {ProductEventListener} from "./product-event-listener.js";
       ]),
       HttpModule,
   ],
-  controllers: [OrderServiceController, ProductEventListener],
+  controllers: [OrderServiceController, ProductEventListener, HealthController],
   providers: [OrderServiceService, OrderEventProducer, PrismaService],
 })
 export class OrderServiceModule {}

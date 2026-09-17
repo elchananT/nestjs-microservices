@@ -11,6 +11,7 @@ import {dirname} from "node:path";
 import {fileURLToPath} from "node:url";
 import {HttpModule} from "@nestjs/axios";
 import { OutboxRelayService } from './outbox-relay.service.js';
+import {HealthController} from "./health.controller.js";
 
 @Module({
   imports: [ClientsModule.register([
@@ -30,7 +31,7 @@ import { OutboxRelayService } from './outbox-relay.service.js';
     }
   ])
   ],
-  controllers: [ProductServiceController, ProductGrpcController, OrderEventListener],
+  controllers: [ProductServiceController, ProductGrpcController, OrderEventListener, HealthController],
   providers: [ProductServiceService, PrismaService, ProductEvents, OutboxRelayService],
 })
 export class ProductServiceModule {}

@@ -1,20 +1,32 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import {createProxyMiddleware} from "http-proxy-middleware";
 import {NextFunction, Response, Request} from "express";
+import {getService} from "../../../shared/discovery/discovery.client.js";
+
+const routes = {
+    '/products': 'product-service',
+    '/orders': 'order-service',
+}
 
 @Injectable()
 export class ProxyMiddleware implements NestMiddleware {
     private readonly proxy = createProxyMiddleware({
-        router: (req, res) => {
-            if (req.url?.startsWith("/products")) {
-                return "http://localhost:3000"
+        router: async (req: Request) => {
+            const route = Object.entries(routes).find(
+                ([path]) => req.originalUrl.startsWith(path))
+
+            if (!route) {
+                return undefined
             }
 
-            if (req.url?.startsWith("/orders")) {
-                return "http://localhost:3001"
-            }
+            const [, serviceName] = route
 
-            return `http://localhost:3000`
+            const instances = await getService(serviceName);
+
+            const healthyInstance = instances.find(
+                instance => instance.healthy)
+
+            return healthyInstance?.url
         }
     })
 
