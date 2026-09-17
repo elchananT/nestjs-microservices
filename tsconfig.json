@@ -25,16 +25,19 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/learning-microservices/tsconfig.app.json"
-    },
-    {
-      "path": "./apps/order/tsconfig.app.json"
-    },
-    {
       "path": "./apps/product-service/tsconfig.app.json"
     },
     {
       "path": "./apps/order-service/tsconfig.app.json"
+    },
+    {
+      "path": "./apps/learning-microservices/tsconfig.app.json"
+    },
+    {
+      "path": "./apps/g/tsconfig.app.json"
+    },
+    {
+      "path": "./apps/api-gateway/tsconfig.app.json"
     }
   ]
 }

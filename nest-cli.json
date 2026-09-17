@@ -1,31 +1,31 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/learning-microservices/src",
+  "sourceRoot": "apps/api-gateway/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "builder": "rspack",
-    "tsConfigPath": "apps/learning-microservices/tsconfig.app.json"
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/learning-microservices",
+  "root": "apps/api-gateway",
   "projects": {
-    "learning-microservices": {
+    "api-gateway": {
       "type": "application",
-      "root": "apps/learning-microservices",
+      "root": "apps/api-gateway",
       "entryFile": "main",
-      "sourceRoot": "apps/learning-microservices/src",
+      "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/learning-microservices/tsconfig.app.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
     },
-    "order": {
+    "g": {
       "type": "application",
-      "root": "apps/order",
+      "root": "apps/g",
       "entryFile": "main",
-      "sourceRoot": "apps/order/src",
+      "sourceRoot": "apps/g/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/order/tsconfig.app.json"
+        "tsConfigPath": "apps/g/tsconfig.app.json"
       }
     },
     "order-service": {
