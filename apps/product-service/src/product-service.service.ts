@@ -35,4 +35,8 @@ export class ProductServiceService {
         return created
     })
   }
+
+  getProducts() {
+    return this.client.product.findMany();
+  }
 }

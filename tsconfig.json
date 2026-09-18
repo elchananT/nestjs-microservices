@@ -34,10 +34,13 @@
       "path": "./apps/api-gateway/tsconfig.app.json"
     },
     {
+      "path": "./apps/discovery-service/tsconfig.app.json"
+    },
+    {
       "path": "./apps/learning-microservices/tsconfig.app.json"
     },
     {
-      "path": "./apps/discovery-service/tsconfig.app.json"
+      "path": "./apps/user-service/tsconfig.app.json"
     }
   ]
 }

@@ -9,7 +9,7 @@ export interface ServiceInstance {
     healthy: boolean
 }
 
-const DISCOVERY_URL = 'http://localhost:3004'
+const DISCOVERY_URL = 'http://localhost:4000'
 
 export async function register(service: ServiceRegistration) {
     const response = await fetch(

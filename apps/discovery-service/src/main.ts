@@ -3,6 +3,6 @@ import { DiscoveryServiceModule } from './discovery-service.module.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(DiscoveryServiceModule);
-  await app.listen(3004);
+  await app.listen(4000);
 }
 await bootstrap();

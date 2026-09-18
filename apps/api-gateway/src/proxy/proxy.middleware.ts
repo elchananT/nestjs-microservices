@@ -6,6 +6,7 @@ import {getService} from "../../../shared/discovery/discovery.client.js";
 const routes = {
     '/products': 'product-service',
     '/orders': 'order-service',
+    '/auth': 'user-service',
 }
 
 @Injectable()
@@ -31,7 +32,7 @@ export class ProxyMiddleware implements NestMiddleware {
     })
 
     use(req: Request, res: Response, next: NextFunction) {
-        if (!/^\/(products|orders)(\/|$)/.test(req.originalUrl)) {
+        if (!/^\/(products|orders|auth)(\/|$)/.test(req.originalUrl)) {
             return res.status(404).send("Not Found")
         }
 

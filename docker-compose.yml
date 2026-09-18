@@ -34,3 +34,13 @@ services:
       POSTGRES_DB: order
     ports:
       - "5433:5432"
+
+  user-db:
+    image: postgres:16-alpine
+    container_name: user-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: user
+    ports:
+      - "5434:5432"

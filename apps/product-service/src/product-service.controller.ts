@@ -8,6 +8,11 @@ export class ProductServiceController {
       private readonly productServiceService: ProductServiceService,
   ) {}
 
+  @Get()
+  getProducts() {
+    return this.productServiceService.getProducts();
+  }
+
   @Get(':id')
   getHello(@Param('id') id: number) {
     return {

@@ -1,10 +1,13 @@
 import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
 import {ProxyMiddleware} from "./proxy.middleware.js";
+import {AuthMiddleware} from "../auth/auth.middleware.js";
 
 @Module({})
 export class ProxyModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
+            .apply(AuthMiddleware)
+            .forRoutes('*')
             .apply(ProxyMiddleware)
             .forRoutes('*')
     }
