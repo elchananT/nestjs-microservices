@@ -9,7 +9,7 @@ export class ProductGrpcController {
         return {
             id: data.id,
             name: 'Product',
-            price: 199.99
+            price: 199.99,
         }
     }
 }

@@ -19,8 +19,8 @@ import {ResilienceService} from "./resilience.service.js";
           name: 'PRODUCT_SERVICE',
           transport: Transport.GRPC,
           options: {
-            package: 'product',
-            protoPath: join(dirname(fileURLToPath(import.meta.url)), '../../shared/proto/product.proto'),
+            package: 'productV1',
+            protoPath: join(dirname(fileURLToPath(import.meta.url)), '../../shared/proto/product-v1.proto'),
             url: 'localhost:5001',
           }
         },
