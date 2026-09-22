@@ -27,7 +27,7 @@ import {ConfigModule} from "@nestjs/config";
       transport: Transport.KAFKA,
       options: {
         client: {
-          brokers: ['localhost:9092'],
+          brokers: process.env.KAFKA_BROKERS?.split(',').map(b => b.trim()) ?? ['localhost:9092'],
           clientId: 'product-service',
           allowAutoTopicCreation: true,
         },

@@ -27,8 +27,8 @@ import resilienceConfig from "../../shared/src/config/resilience.config.js";
           transport: Transport.GRPC,
           options: {
             package: 'productV1',
-            protoPath: join(dirname(fileURLToPath(import.meta.url)), '../../shared/proto/product-v1.proto'),
-            url: 'localhost:5001',
+            protoPath: process.env.PROTO_PATH ?? join(dirname(fileURLToPath(import.meta.url)), '../../shared/proto/product-v1.proto'),
+            url: process.env.PRODUCT_GRPC_URL ?? 'localhost:5001',
           }
         },
         {
@@ -36,7 +36,7 @@ import resilienceConfig from "../../shared/src/config/resilience.config.js";
             transport: Transport.KAFKA,
             options: {
                 client: {
-                    brokers: ['localhost:9092'],
+                    brokers: process.env.KAFKA_BROKERS?.split(',').map(b => b.trim()) ?? ['localhost:9092'],
                     clientId: 'order-service',
                     allowAutoTopicCreation: true,
                 },

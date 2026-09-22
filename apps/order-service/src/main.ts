@@ -11,7 +11,7 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['localhost:9092'],
+        brokers: process.env.KAFKA_BROKERS?.split(',').map(b => b.trim()) ?? ['localhost:9092'],
         clientId: 'order-service',
       },
       consumer: {
@@ -26,7 +26,7 @@ async function bootstrap() {
 
   await register({
     name: 'order-service',
-    url: `http://localhost:3001`
+    url: process.env.SERVICE_URL ?? `http://localhost:3001`
   })
 }
 await bootstrap();

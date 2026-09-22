@@ -57,7 +57,7 @@ export class ResilienceService {
        private readonly config: ConfigService,
     ) {
         this.options = {
-            productBaseUrl: 'http://localhost:3000',
+            productBaseUrl: process.env.PRODUCT_SERVICE_URL ?? 'http://localhost:3000',
             fetcher: (input, init) => fetch(input, init),
             backoff: new ExponentialBackoff(),
 
@@ -104,7 +104,7 @@ export class ResilienceService {
         try {
             return await this.productPolicy.execute(async ({signal}) => {
                 const response = await this.options.fetcher(
-                    `${this.options.productBaseUrl}/products/${productId}`,
+                    `${this.options.productBaseUrl}/v1/products/${productId}`,
                     { signal },
                 )
 

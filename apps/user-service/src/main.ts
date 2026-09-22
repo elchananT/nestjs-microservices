@@ -8,7 +8,7 @@ async function bootstrap() {
 
   await register({
     name: 'user-service',
-    url: `http://localhost:3002`
+    url:  process.env.SERVICE_URL ?? `http://localhost:3002`
   })
 }
 await bootstrap();

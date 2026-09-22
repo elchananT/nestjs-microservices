@@ -32,7 +32,7 @@ export class ProxyMiddleware implements NestMiddleware {
     })
 
     use(req: Request, res: Response, next: NextFunction) {
-        if (!/^\/(products|orders|auth)(\/|$)/.test(req.originalUrl)) {
+        if (!/^\/(products|orders|auth)([/?]|$)/.test(req.originalUrl)) {
             return res.status(404).send("Not Found")
         }
 
