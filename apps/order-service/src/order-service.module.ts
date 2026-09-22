@@ -10,6 +10,7 @@ import {OrderEventProducer} from "./order-event-producer.js";
 import { PrismaService } from './prisma.service.js';
 import {ProductEventListener} from "./product-event-listener.js";
 import {HealthController} from "./health.controller.js";
+import {ResilienceService} from "./resilience.service.js";
 
 @Module({
   imports: [
@@ -41,6 +42,6 @@ import {HealthController} from "./health.controller.js";
       HttpModule,
   ],
   controllers: [OrderServiceController, ProductEventListener, HealthController],
-  providers: [OrderServiceService, OrderEventProducer, PrismaService],
+  providers: [OrderServiceService, OrderEventProducer, PrismaService, ResilienceService],
 })
 export class OrderServiceModule {}

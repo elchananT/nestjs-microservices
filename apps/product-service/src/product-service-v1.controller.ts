@@ -1,24 +1,29 @@
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, ServiceUnavailableException} from '@nestjs/common';
 import { ProductServiceService } from './product-service.service.js';
-import {ProductEvents} from "./product-events.js";
 
-@Controller('products')
-export class ProductServiceController {
+@Controller({
+  path: 'products',
+  version: '1'
+})
+export class ProductServiceV1Controller {
   constructor(
       private readonly productServiceService: ProductServiceService,
   ) {}
 
   @Get()
-  getProducts() {
+  getProducts()
+  {
     return this.productServiceService.getProducts();
   }
 
+
   @Get(':id')
-  getHello(@Param('id') id: number) {
+  async getProduct(@Param('id') id: number) {
     return {
-      id: id,
+      version: 'v1',
+      id,
       name: "MacBook Pro",
-      price: 1999.99
+      price: 1999.99,
     }
   }
 

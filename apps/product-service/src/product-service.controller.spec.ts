@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductServiceController } from './product-service.controller.js';
+import { ProductServiceV1Controller } from './product-service-v1.controller.js';
 import { ProductServiceService } from './product-service.service.js';
 
-describe('ProductServiceController', () => {
-  let controller: ProductServiceController;
+describe('ProductServiceV1Controller', () => {
+  let controller: ProductServiceV1Controller;
   let service: ProductServiceService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ProductServiceController],
+      controllers: [ProductServiceV1Controller],
       providers: [
         {
           provide: ProductServiceService,
@@ -19,7 +19,7 @@ describe('ProductServiceController', () => {
       ],
     }).compile();
 
-    controller = module.get<ProductServiceController>(ProductServiceController);
+    controller = module.get<ProductServiceV1Controller>(ProductServiceV1Controller);
     service = module.get<ProductServiceService>(ProductServiceService);
   });
 

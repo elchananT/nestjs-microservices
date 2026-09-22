@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ProductServiceController } from './product-service.controller.js';
+import { ProductServiceV1Controller } from './product-service-v1.controller.js';
 import { ProductServiceService } from './product-service.service.js';
 import { ProductGrpcController } from './product-grpc.controller.js';
 import {OrderEventListener} from "./order-event-listener.js";
@@ -12,6 +12,7 @@ import {fileURLToPath} from "node:url";
 import {HttpModule} from "@nestjs/axios";
 import { OutboxRelayService } from './outbox-relay.service.js';
 import {HealthController} from "./health.controller.js";
+import {ProductServiceV2Controller} from "./product-service-v2.controller.js";
 
 @Module({
   imports: [ClientsModule.register([
@@ -31,7 +32,7 @@ import {HealthController} from "./health.controller.js";
     }
   ])
   ],
-  controllers: [ProductServiceController, ProductGrpcController, OrderEventListener, HealthController],
+  controllers: [ProductServiceV1Controller, ProductGrpcController, OrderEventListener, HealthController, ProductServiceV2Controller],
   providers: [ProductServiceService, PrismaService, ProductEvents, OutboxRelayService],
 })
 export class ProductServiceModule {}

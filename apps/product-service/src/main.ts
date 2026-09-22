@@ -1,9 +1,10 @@
-import { NestFactory } from '@nestjs/core';
-import { ProductServiceModule } from './product-service.module.js';
+import {NestFactory} from '@nestjs/core';
+import {ProductServiceModule} from './product-service.module.js';
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
-import { dirname, join } from "path";
+import {dirname, join} from "path";
 import {fileURLToPath} from "node:url";
 import {register} from "../../shared/discovery/discovery.client.js";
+import {VersioningType} from "@nestjs/common";
 
 async function bootstrap() {
     const app = await NestFactory.create(ProductServiceModule);
@@ -30,6 +31,11 @@ async function bootstrap() {
           }
       }
   });
+
+    app.enableVersioning({
+        type: VersioningType.CUSTOM,
+        extractor: (request: any) => request.query.version ?? ''
+    })
 
     await app.startAllMicroservices()
 

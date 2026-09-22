@@ -4,7 +4,7 @@ import request from 'supertest';
 import { App } from 'supertest/types';
 import { ProductServiceModule } from './../src/product-service.module.js';
 
-describe('ProductServiceController (e2e)', () => {
+describe('ProductServiceV1Controller (e2e)', () => {
   let app: INestApplication<App>;
 
   beforeEach(async () => {
