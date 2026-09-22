@@ -13,9 +13,15 @@ import {HttpModule} from "@nestjs/axios";
 import { OutboxRelayService } from './outbox-relay.service.js';
 import {HealthController} from "./health.controller.js";
 import {ProductServiceV2Controller} from "./product-service-v2.controller.js";
+import {ConfigModule} from "@nestjs/config";
 
 @Module({
-  imports: [ClientsModule.register([
+  imports: [
+      ConfigModule.forRoot({
+        isGlobal: true,
+        envFilePath: ['apps/product-service/.env']
+      }),
+      ClientsModule.register([
     {
       name: 'KAFKA_SERVICE',
       transport: Transport.KAFKA,

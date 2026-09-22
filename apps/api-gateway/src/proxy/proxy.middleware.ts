@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import {createProxyMiddleware} from "http-proxy-middleware";
 import {NextFunction, Response, Request} from "express";
-import {getService} from "../../../shared/discovery/discovery.client.js";
+import {getService} from "../../../shared/src/discovery/discovery.client.js";
 
 const routes = {
     '/products': 'product-service',

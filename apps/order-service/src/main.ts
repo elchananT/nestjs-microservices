@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { OrderServiceModule } from './order-service.module.js';
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
-import {register} from "../../shared/discovery/discovery.client.js";
+import {register} from "../../shared/src/discovery/discovery.client.js";
 
 async function bootstrap() {
   const app = await NestFactory.create(OrderServiceModule);

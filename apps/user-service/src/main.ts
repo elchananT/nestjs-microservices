@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { UserServiceModule } from './user-service.module.js';
-import {register} from "../../shared/discovery/discovery.client.js";
+import {register} from "../../shared/src/discovery/discovery.client.js";
 
 async function bootstrap() {
   const app = await NestFactory.create(UserServiceModule);

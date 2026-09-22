@@ -19,6 +19,7 @@ import {
     TimeoutStrategy,
     wrap
 } from "cockatiel";
+import {ConfigService} from "@nestjs/config";
 
 export class ProductServiceError extends Error {
     constructor(
@@ -29,18 +30,6 @@ export class ProductServiceError extends Error {
 
         this.name = "ProductServiceError";
     }
-}
-
-const DEFAULT_OPTIONS: ResilienceOptions = {
-    timeoutMs: 5_000,
-    productBaseUrl: 'http://localhost:3000',
-    fetcher: (input, init) => fetch(input, init),
-    maxAttempts: 3,
-    backoff: new ExponentialBackoff(),
-    failureThreshold: 3,
-    halfOpenAfterMs: 10_000,
-    bulkheadLimit: 10,
-    bullheadQueue: 10,
 }
 
 function isRetryableFailure(error: unknown): boolean {
@@ -65,11 +54,19 @@ export class ResilienceService {
     }
 
     constructor(
-        @Optional() options: Partial<ResilienceOptions>,
+       private readonly config: ConfigService,
     ) {
         this.options = {
-            ...DEFAULT_OPTIONS,
-            ...options,
+            productBaseUrl: 'http://localhost:3000',
+            fetcher: (input, init) => fetch(input, init),
+            backoff: new ExponentialBackoff(),
+
+            timeoutMs: this.config.getOrThrow<number>('resilience.timeoutMs'),
+            maxAttempts: this.config.getOrThrow<number>('resilience.maxAttempts'),
+            failureThreshold: this.config.getOrThrow<number>('resilience.failureThreshold'),
+            halfOpenAfterMs: this.config.getOrThrow<number>('resilience.halfOpenAfterMs'),
+            bulkheadLimit: this.config.getOrThrow<number>('resilience.bulkheadLimit'),
+            bullheadQueue: this.config.getOrThrow<number>('resilience.bullheadQueue'),
         }
 
         const failureFilter = handleWhen(isRetryableFailure)

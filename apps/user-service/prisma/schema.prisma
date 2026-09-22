@@ -1,17 +1,17 @@
 generator client {
   provider = "prisma-client-js"
-  output = "../../../node_modules/@prisma/user-client"
+  output   = "../../../node_modules/@prisma/user-client"
 }
 
 datasource db {
   provider = "postgresql"
-  url = "postgresql://postgres:postgres@localhost:5434/user?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  email          String     @unique
-  passwordHash   String
-  createAt       DateTime   @default(now())
-  updateAt       DateTime   @updatedAt
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createAt     DateTime @default(now())
+  updateAt     DateTime @updatedAt
 }

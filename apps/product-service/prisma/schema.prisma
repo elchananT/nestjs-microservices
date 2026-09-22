@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/product?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -19,11 +19,11 @@ model Product {
 }
 
 model OutboxEvent {
-  id          Int         @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   eventType   String
   payload     Json
-  status      String      @default("PENDING")
-  createAt    DateTime    @default(now())
+  status      String    @default("PENDING")
+  createAt    DateTime  @default(now())
   processedAt DateTime?
 
   @@index([status, createAt])

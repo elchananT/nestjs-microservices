@@ -11,9 +11,16 @@ import { PrismaService } from './prisma.service.js';
 import {ProductEventListener} from "./product-event-listener.js";
 import {HealthController} from "./health.controller.js";
 import {ResilienceService} from "./resilience.service.js";
+import {ConfigModule} from "@nestjs/config";
+import resilienceConfig from "../../shared/src/config/resilience.config.js";
 
 @Module({
   imports: [
+      ConfigModule.forRoot({
+          isGlobal: true,
+          envFilePath: ['apps/order-service/.env', '.env'],
+          load: [resilienceConfig]
+      }),
       ClientsModule.register([
         {
           name: 'PRODUCT_SERVICE',

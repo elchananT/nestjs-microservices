@@ -4,9 +4,7 @@ import {NextFunction, Request, Response} from "express";
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-    private readonly jwtService = new JwtService({
-        secret: process.env.JWT_SECRET,
-    });
+    constructor(private readonly jwtService: JwtService) {}
 
     async use(req: Request, res: Response, next: NextFunction) {
         const path = req.originalUrl

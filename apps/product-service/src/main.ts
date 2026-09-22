@@ -3,7 +3,7 @@ import {ProductServiceModule} from './product-service.module.js';
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
 import {dirname, join} from "path";
 import {fileURLToPath} from "node:url";
-import {register} from "../../shared/discovery/discovery.client.js";
+import {register} from "../../shared/src/discovery/discovery.client.js";
 import {VersioningType} from "@nestjs/common";
 
 async function bootstrap() {
