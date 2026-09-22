@@ -12,6 +12,8 @@ const routes = {
 @Injectable()
 export class ProxyMiddleware implements NestMiddleware {
     private readonly proxy = createProxyMiddleware({
+        changeOrigin: true,
+        agent: false,
         router: async (req: Request) => {
             const route = Object.entries(routes).find(
                 ([path]) => req.originalUrl.startsWith(path))

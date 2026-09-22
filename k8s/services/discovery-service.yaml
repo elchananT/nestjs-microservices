@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discovery-service
+  namespace: learning-microservices
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: discovery-service
+
+  template:
+    metadata:
+      labels:
+        app: discovery-service
+
+    spec:
+      containers:
+        - name: discovery-service
+          image: learning-microservices-discovery-service:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 4000
+
+          envFrom:
+            - configMapRef:
+                name: config
+
+            - secretRef:
+                name: secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery-service
+  namespace: learning-microservices
+
+spec:
+  selector:
+    app: discovery-service
+
+  ports:
+    - port: 4000
+      targetPort: 4000

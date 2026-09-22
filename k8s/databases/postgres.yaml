@@ -1,0 +1,279 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: product-db-pvc
+  namespace: learning-microservices
+
+spec:
+  accessModes: ['ReadWriteOnce']
+
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-db
+  namespace: learning-microservices
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: product-db
+
+  strategy:
+    type: Recreate
+
+  template:
+    metadata:
+      labels:
+        app: product-db
+
+    spec:
+      containers:
+        - name: product-db
+          image: postgres:16-alpine
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_DB
+              value: product-db
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DB_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DB_PASSWORD
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: pgdata
+
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - postgres
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: product-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-db
+  namespace: learning-microservices
+
+spec:
+  selector:
+    app: product-db
+
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: order-db-pvc
+  namespace: learning-microservices
+
+spec:
+  accessModes: ['ReadWriteOnce']
+
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-db
+  namespace: learning-microservices
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: order-db
+
+  strategy:
+    type: Recreate
+
+  template:
+    metadata:
+      labels:
+        app: order-db
+
+    spec:
+      containers:
+        - name: order-db
+          image: postgres:16-alpine
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_DB
+              value: order-db
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DB_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DB_PASSWORD
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: pgdata
+
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - postgres
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: order-db-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-db
+  namespace: learning-microservices
+
+spec:
+  selector:
+    app: order-db
+
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: user-db-pvc
+  namespace: learning-microservices
+
+spec:
+  accessModes: ['ReadWriteOnce']
+
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db
+  namespace: learning-microservices
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: user-db
+
+  strategy:
+    type: Recreate
+
+  template:
+    metadata:
+      labels:
+        app: user-db
+
+    spec:
+      containers:
+        - name: user-db
+          image: postgres:16-alpine
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_DB
+              value: user-db
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DB_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DB_PASSWORD
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: pgdata
+
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - postgres
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: user-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db
+  namespace: learning-microservices
+
+spec:
+  selector:
+    app: user-db
+
+  ports:
+    - port: 5432
+      targetPort: 5432

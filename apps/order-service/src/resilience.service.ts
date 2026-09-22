@@ -104,7 +104,7 @@ export class ResilienceService {
         try {
             return await this.productPolicy.execute(async ({signal}) => {
                 const response = await this.options.fetcher(
-                    `${this.options.productBaseUrl}/v1/products/${productId}`,
+                    `${this.options.productBaseUrl}/products/${productId}?version=1`,
                     { signal },
                 )
 
