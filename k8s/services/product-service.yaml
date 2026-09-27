@@ -15,7 +15,10 @@ spec:
     metadata:
       labels:
         app: product-service
-
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: product-service
@@ -34,9 +37,11 @@ spec:
                 name: secret
 
           env:
+            - name: OTEL_SERVICE_NAME
+              value: product-service
+
             - name: DATABASE_URL
               value: postgresql://postgres:postgres@product-db:5432/product-db
-
             - name: SERVICE_URL
               value: http://product-service:3000
 ---

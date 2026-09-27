@@ -16,6 +16,11 @@ spec:
       labels:
         app: order-service
 
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3001"
+        prometheus.io/path: "/metrics"
+
     spec:
       containers:
         - name: order-service
@@ -33,6 +38,9 @@ spec:
                 name: secret
 
           env:
+            - name: OTEL_SERVICE_NAME
+              value: order-service
+
             - name: DATABASE_URL
               value: postgresql://postgres:postgres@order-db:5432/order-db
 

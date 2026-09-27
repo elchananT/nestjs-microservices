@@ -16,6 +16,11 @@ spec:
       labels:
         app: discovery-service
 
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4000"
+        prometheus.io/path: "/metrics"
+
     spec:
       containers:
         - name: discovery-service
@@ -31,6 +36,10 @@ spec:
 
             - secretRef:
                 name: secret
+
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: discovery-service
 
 ---
 apiVersion: v1

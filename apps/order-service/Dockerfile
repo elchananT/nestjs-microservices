@@ -19,5 +19,6 @@ COPY --from=build /app/node_modules/@prisma/order-client ./node_modules/@prisma/
 COPY --from=build /app/dist/apps/order-service/main.js ./main.js
 COPY apps/order-service/prisma ./apps/order-service/prisma
 COPY apps/shared/proto ./apps/shared/proto
+COPY apps/shared/src/observability/otel-setup.mjs ./otel-setup.mjs
 EXPOSE 3001
-CMD ["sh", "-c", "npx prisma migrate deploy --schema apps/order-service/prisma/schema.prisma && node main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy --schema apps/order-service/prisma/schema.prisma && node --import ./otel-setup.mjs main.js"]

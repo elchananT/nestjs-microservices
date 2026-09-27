@@ -16,6 +16,11 @@ spec:
       labels:
         app: user-service
 
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3002"
+        prometheus.io/path: "/metrics"
+
     spec:
       containers:
         - name: user-service
@@ -33,6 +38,10 @@ spec:
                 name: secret
 
           env:
+            - name: OTEL_SERVICE_NAME
+              value: user-service
+
+
             - name: DATABASE_URL
               value: postgresql://postgres:postgres@user-db:5432/user-db
 

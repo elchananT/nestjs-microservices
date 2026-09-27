@@ -15,5 +15,6 @@ ENV NODE_ENV=production
 COPY package.json ./
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=build /app/dist/apps/discovery-service/main.js ./main.js
+COPY apps/shared/src/observability/otel-setup.mjs ./otel-setup.mjs
 EXPOSE 4000
-CMD ["node", "main.js"]
+CMD ["node", "--import","./otel-setup.mjs", "main.js"]

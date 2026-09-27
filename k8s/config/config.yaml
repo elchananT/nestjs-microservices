@@ -11,6 +11,9 @@ data:
   PRODUCT_GRPC_URL: 'product-service:5001'
   PRODUCT_SERVICE_URL: 'http://product-service:3000'
 
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: 'http://tempo:4318/v1/traces'
+  OTEL_DEPLOYMENT_ENVIRONMENT: 'k8s'
+
   TIMEOUT_MS: '5000'
   MAX_ATTEMPTS: '3'
   FAILURE_THRESHOLD: '3'

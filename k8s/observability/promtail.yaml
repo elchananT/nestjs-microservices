@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: promtail
+  namespace: learning-microservices
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: promtail
+  namespace: learning-microservices
+
+rules:
+  - apiGroups:
+      - ""
+
+    resources:
+      - pods
+
+    verbs:
+      - get
+      - list
+      - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: promtail
+  namespace: learning-microservices
+
+subjects:
+  - kind: ServiceAccount
+    name: promtail
+    namespace: learning-microservices
+
+roleRef:
+  kind: Role
+  name: promtail
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: promtail-config
+  namespace: learning-microservices
+
+data:
+  promtail.yml: |
+    server:
+      http_listen_port: 9080
+      
+    clients:
+      - url: http://loki:3100/loki/api/v1/push
+    
+    positions:
+      filename: /tmp/positions.yml
+      
+    scrape_configs:
+      - job_name: kubernetes-pods
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: kubernetes-pods
+              __path__: /var/log/pods/learning-microservices_*/*/*.log
+              
+        pipeline_stages:
+          - cri: {}
+          - json:
+              expressions:
+                level: level
+          - regex:
+              source: filename
+              expression: '^/var/log/pods/(?P<namespace>[^_]+)_(?P<pod>.+)_(?P<uid>[0-9a-f-]{36})/(?P<container>[^/]+)/[0-9]+\.log$'
+              
+          - labels:
+              namespace:
+              pods:
+              container:
+              app: container
+              level:
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: promtail
+  namespace: learning-microservices
+
+spec:
+  selector:
+    matchLabels:
+      app: promtail
+
+  template:
+    metadata:
+      labels:
+        app: promtail
+
+    spec:
+      containers:
+        - name: promtail
+          image: grafana/promtail:3.3.2
+          args:
+            - -config.file=/etc/promtail/promtail.yml
+
+
+          resources:
+            requests:
+              memory: 100Mi
+            limits:
+              memory: 150Mi
+
+          volumeMounts:
+            - name: config
+              mountPath: /etc/promtail
+
+            - name: varlogpods
+              mountPath: /var/log/pods
+              readOnly: true
+
+            - name: positions
+              mountPath: /tmp
+
+      volumes:
+        - name: config
+          configMap:
+            name: promtail-config
+
+        - name: varlogpods
+          hostPath:
+            path: /var/log/pods
+
+        - name: positions
+          emptyDir: { }

@@ -1,5 +1,9 @@
 import {Injectable, OnModuleDestroy, OnModuleInit} from '@nestjs/common';
 import {clearInterval} from "node:timers";
+import {createLogger} from "../../shared/src/observability/logging.js";
+
+const SERVICE_NAME = 'discovery-service';
+const logger = createLogger(SERVICE_NAME);
 
 export interface ServiceInstance {
   name: string;
@@ -63,7 +67,10 @@ export class DiscoveryService implements OnModuleInit, OnModuleDestroy {
             healthyInstances.push(instance)
           }
         } catch {
-          console.log(`Service ${instance.name} is unhealthy`)
+          logger.warn(`Service ${instance.name} failed to fetch healthy instances`, {
+            serviceName: instance.name,
+            url: instance.url,
+          })
         }
       }
 

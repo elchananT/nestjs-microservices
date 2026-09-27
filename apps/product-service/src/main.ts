@@ -5,9 +5,15 @@ import {dirname, join} from "path";
 import {fileURLToPath} from "node:url";
 import {register} from "../../shared/src/discovery/discovery.client.js";
 import {VersioningType} from "@nestjs/common";
+import {createLogger} from "../../shared/src/observability/logging.js";
+import {createMetricsMiddleware, createMetricsRegistry} from "../../shared/src/observability/metrics.js";
+
+const SERVICE_NAME = 'product-service';
+const logger = createLogger(SERVICE_NAME);
+
 
 async function bootstrap() {
-    const app = await NestFactory.create(ProductServiceModule);
+    const app = await NestFactory.create(ProductServiceModule, { logger });
     app.enableShutdownHooks();
 
         app.connectMicroservice<MicroserviceOptions>({
@@ -23,7 +29,7 @@ async function bootstrap() {
       transport: Transport.KAFKA,
       options: {
         client: {
-            brokers: process.env.KAFKA_BROKERS?.split(',').map(b => b.trim()) ?? ['localhost:9092'],
+            brokers: process.env.KAFKA_BROKERS?.split(',').map(b => b.trim()).filter(Boolean) ?? ['localhost:9092'],
             clientId: 'product-service',
         },
           consumer: {
@@ -36,6 +42,8 @@ async function bootstrap() {
         type: VersioningType.CUSTOM,
         extractor: (request: any) => request.query.version ?? ''
     })
+
+    app.use(createMetricsMiddleware(createMetricsRegistry('product-service')))
 
     await app.startAllMicroservices()
 
