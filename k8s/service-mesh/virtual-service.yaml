@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+
+metadata:
+  name: product-service
+  namespace:  learning-microservices
+
+spec:
+  hosts:
+    - product-service
+
+  http:
+    - route:
+        - destination:
+            host: product-service
+            subset: v1
+            port:
+              number: 3000
+          weight: 80
+
+        - destination:
+            host: product-service
+            subset: v2
+            port:
+              number: 3000
+          weight: 20
+
+      timeout: 5s

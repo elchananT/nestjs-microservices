@@ -1,0 +1,25 @@
+apiVersion: internal.apiserver.k8s.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: learning-microservices-mesh
+  namespace: istio-system
+
+spec:
+  profile: minimal
+
+  meshConfig:
+    accessLogFile: /dev/stdout
+
+    enableTracing: true
+
+    extensionProviders:
+      - name: tempo
+        opentelemetry:
+          service: tempo.learning-microservices.svc.cluster.local
+          port: 4317
+
+    defaultProviders:
+      metrics:
+        - prometheus
+      tracing:
+        - tempo

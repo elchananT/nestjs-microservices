@@ -1,0 +1,12 @@
+apiVersion: telemetry.istio.io/v1
+kind: Telemetry
+
+metadata:
+  name: mesh-tracing
+  namespace: learning-microservices
+
+spec:
+  tracing:
+    - providers:
+        - name: tempo
+      randomSamplingPercentage: 100

@@ -1,0 +1,40 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+
+metadata:
+  name: product-service
+  namespace:  learning-microservices
+
+spec:
+  hosts:
+    - product-service
+
+  http:
+    - match:
+        - uri:
+            prefix: /health
+      route:
+        - destination:
+            host: product-service
+            subset: v2
+            port:
+              number: 3000
+
+    - match:
+        - sourceLabels:
+            app: api-gateway
+
+      route:
+        - destination:
+            host: dead-upstream
+            port:
+              number: 3000
+
+      timeout: 2s
+
+    - route:
+        - destination:
+            host: product-service
+            subset: v2
+            port:
+              number: 3000
