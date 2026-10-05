@@ -6,7 +6,7 @@ metadata:
 
 data:
   loki.yml: |
-    auto_enabled: false
+    auth_enabled: false
     
     server:
       http_listen_port: 3100

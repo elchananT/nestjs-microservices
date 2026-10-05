@@ -21,6 +21,7 @@ export class ProductServiceV1Controller {
   async getProduct(@Param('id') id: number) {
     return {
       version: 'v1',
+      serviceVersion: process.env.SERVICE_VERSION ?? 'unknown',
       id,
       name: "MacBook Pro",
       price: 1999.99,

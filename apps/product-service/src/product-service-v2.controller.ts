@@ -11,6 +11,7 @@ export class ProductServiceV2Controller {
             version: 'v2',
             product: {
                 id,
+                serviceVersion: process.env.SERVICE_VERSION ?? 'unknown',
                 name: "MacBook Pro",
                 price: 1999.99,
                 currency: "USD"
